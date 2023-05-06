@@ -3,9 +3,9 @@ package ru.kottofey;
 public class CodeTable {
 	private int firstLetter;
 	private int lastLetter;
-	int alphabetLength;
+	private int alphabetLength;
 	private int currentChar;
-	private StringBuilder[] codeTable;
+	public StringBuilder[] codeTable;
 	CodeTable(String lang) {
 		switch (lang) {
 			case "en":
@@ -35,7 +35,7 @@ public class CodeTable {
 			}
 			currentChar = firstLetter + i + 1;
 		}
-	}
+	} // end of constructor
 
 	public StringBuilder getCodeTableLine(int lineNum) {
 		return codeTable[lineNum];
