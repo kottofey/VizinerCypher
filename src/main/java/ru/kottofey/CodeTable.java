@@ -5,7 +5,7 @@ public class CodeTable {
 	private int lastLetter;
 	private int alphabetLength;
 	private int currentChar;
-	public StringBuilder[] codeTable;
+	private StringBuilder[] codeTable;
 	CodeTable(String lang) {
 		switch (lang) {
 			case "en":
@@ -35,9 +35,10 @@ public class CodeTable {
 			}
 			currentChar = firstLetter + i + 1;
 		}
-	} // end of constructor
-
-	public StringBuilder getCodeTableLine(int lineNum) {
-		return codeTable[lineNum];
 	}
+
+	public StringBuilder[] getCodeTable() {
+		return codeTable;
+	}
+
 }
