@@ -2,12 +2,10 @@ package ru.kottofey;
 
 public class VizinerCipher {
 
+	// TODO: Input from file and output to file
 	public static void main(String[] args) {
-
-		CodeTable enTable = new CodeTable("en");
-
-		System.out.println(enTable.codeTable[0].toString());
-
+		Transcoder transcoder = new Transcoder();
+		Transcoder.Menu menu = transcoder.new Menu();
 	}
 
 }
