@@ -1,89 +1,61 @@
 package ru.kottofey;
 
-import java.util.Scanner;
-
 public class Transcoder {
+	private StringBuilder codedPhrase;
 	private String lang;
-	private String mode;
 	private String originalPhrase;
 	private String keyPhrase;
-	private String codedPhrase;
-	CodeTable codeTable;
-	Scanner scanner = new Scanner(System.in);
+	private String mode;
+	private CodeTable codeTable;
 
-	class Menu {
-		public void showLanguageMenu() {
-			System.out.print("\nThis is a Vigenere Cipher algorithm.\n\n" +
-					"What alphabet will be used?\n" +
-					"1) Latin\n" +
-					"2) Cyrillic\n" +
-					"Enter option > ");
-			switch (scanner.nextInt()) {
-				case 1:
-					setLang("en");
-					break;
-				case 2:
-					setLang("ru");
-					break;
-				default:
-					setLang("unknown");
-					break;
-			}
-			codeTable = new CodeTable(getLang());
-			scanner.nextLine();
+	public Transcoder() {
+		Menu menu = new Menu();
+		codedPhrase = new StringBuilder();
+
+		menu.showHelloMenu();
+
+		menu.showLanguageMenu();
+		setLang(menu.getLang());
+
+		menu.showModeMenu();
+		setMode(menu.getMode());
+
+		switch (getMode()) {
+			case "encrypt":
+				menu.showEncryptMenu();
+				break;
+			case "decrypt":
+				menu.showDecryptMenu();
+				break;
 		}
+		setOriginalPhrase(menu.getOriginalPhrase());
+		setKeyPhrase(menu.getKeyPhrase());
 
-		public void showModeMenu() {
-			System.out.print("\nPlease choose an option:\n" +
-					"1) Encrypt\n" +
-					"2) Decrypt\n" +
-					"3) Exit application\n" +
-					"Enter option > ");
-			switch (scanner.nextInt()) {
-				case 1:
-					setMode("encrypt");
-					break;
-				case 2:
-					setMode("decrypt");
-					break;
-				case 3:
-					setMode("exit");
-				default:
-					setMode("unknown");
-					break;
-			}
-			scanner.nextLine();
-		}
-
-		public void showEncryptMenu() {
-			System.out.printf("\n\n-= Encryption =-\n" +
-					"Enter phrase for encryption. Only selected language letters and\n" +
-					"spaces are allowed, all punctuation and other symbols will be truncated\n" +
-					"-> Selected language is: %s\n" +
-					"Enter original phrase to encrypt > ", lang);
-
-			setOriginalPhrase(scanner.nextLine());
-
-			System.out.print("Enter Key Phrase > ");
-			setKeyPhrase(scanner.nextLine());
-		}
-
-		public void showDecryptMenu() {
-			System.out.printf("\n\n-= Decryption =-\n" +
-					"Enter sequence for decryption. Only selected language letters\n" +
-					"are allowed, all punctuation, spaces and other symbols will be truncated\n" +
-					"-> Selected language is: %s\n" +
-					"Enter original phrase to decrypt > ", lang);
-			setOriginalPhrase(scanner.nextLine());
-
-			System.out.print("Enter Key Phrase > ");
-			setKeyPhrase(scanner.nextLine());
-		}
+		codeTable = new CodeTable(menu.getLang());
 	}
 
+	public void doEncrypt() {
+		// TODO: Implement encryption code
+		System.out.println(this.codedPhrase.replace(0, codedPhrase.length(), "Returning decrypted phrase"));
+		System.out.println("Code table used:\n" + codeTable.getCodeTable()[0].toString());
+	}
+
+	public void doDecrypt() {
+		// TODO: Implement decryption code
+		System.out.println(this.codedPhrase.replace(0, codedPhrase.length(), "Returning decrypted phrase"));
+		System.out.println("Code table used:\n" + codeTable.getCodeTable()[1].toString());
+	}
+
+	public StringBuilder getCodedPhrase() {
+		return codedPhrase;
+	}
+
+	public void setCodedPhrase(StringBuilder codedPhrase) {
+		this.codedPhrase = codedPhrase;
+	}
 
 	public String getLang() {
-		return this.lang;
+		return lang;
 	}
 
 	public void setLang(String lang) {

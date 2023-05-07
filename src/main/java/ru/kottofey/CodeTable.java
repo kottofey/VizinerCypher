@@ -6,7 +6,12 @@ public class CodeTable {
 	private int alphabetLength;
 	private int currentChar;
 	private StringBuilder[] codeTable;
+
 	CodeTable(String lang) {
+		setCodeTable(lang);
+	}
+
+	private void setCodeTable(String lang) {
 		switch (lang) {
 			case "en":
 				firstLetter = 'a';
