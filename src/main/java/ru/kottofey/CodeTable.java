@@ -1,49 +1,53 @@
 package ru.kottofey;
 
-public class CodeTable {
-	private int firstLetter;
-	private int lastLetter;
-	private int alphabetLength;
-	private int currentChar;
-	private StringBuilder[] codeTable;
+class CodeTable {
+	private final int enFirstLetter = 'A'; // utf 61
+	private final int enLastLetter = 'z';  // utf 122
+	private final int jump = 918 - 1; // distance between rus 'А' & en 'z'
+	private final int enLength = 'z' - 'A' + 1;
+	private final int ruLength = 'я' - 'А' + 1;
+	private final String additionalChars = " ,.!?-";
+	private int currentChar = enFirstLetter;
+	private StringBuilder tempString;
+	private int tempChar;
 
-	CodeTable(String lang) {
-		setCodeTable(lang);
+	private int alphabetLength = enLength + ruLength + additionalChars.length();
+	private StringBuilder[] codeTable = new StringBuilder[alphabetLength];
+
+	CodeTable() {
+		setCodeTable();
 	}
 
-	private void setCodeTable(String lang) {
-		switch (lang) {
-			case "en":
-				firstLetter = 'a';
-				lastLetter = 'z';
-				break;
-			case "ru":
-				firstLetter = 'а';
-				lastLetter = 'я';
-				break;
-			default:
-				System.out.println("Unsupported language, please choose Russian or English");
-				break;
-		}
+	private void setCodeTable() {
+		codeTable[0] = new StringBuilder();
 
-		alphabetLength = lastLetter - firstLetter + 1;
-		codeTable = new StringBuilder[alphabetLength];
-		currentChar = firstLetter;
-
-		for (int i = 0; i < alphabetLength; i++) {
-			codeTable[i] = new StringBuilder();
-			for (int j = 0; j < alphabetLength; j++) {
-				if (currentChar > lastLetter) {
-					currentChar = firstLetter;
-				}
-				codeTable[i].append((char) (currentChar++));
+		// building first "en + ru + add chars" string
+		for (int i = 0; i < alphabetLength - additionalChars.length(); i++) {
+			if (currentChar == enLastLetter + 1) {
+				currentChar += jump;
 			}
-			currentChar = firstLetter + i + 1;
+			codeTable[0].append((char) (currentChar++));
 		}
+		codeTable[0].append(additionalChars); // adding other characters to table here
+
+		for (int i = 1; i < alphabetLength; i++) {
+			codeTable[i] = new StringBuilder();
+			tempString = new StringBuilder(codeTable[i-1]);
+			tempChar = tempString.charAt(0);
+
+			tempString.deleteCharAt(0).append((char) tempChar);
+			codeTable[i].append(tempString);
+		}
+	}
+
+	public String getAdditionalChars() {
+		return additionalChars;
 	}
 
 	public StringBuilder[] getCodeTable() {
 		return codeTable;
 	}
+
+
 
 }
