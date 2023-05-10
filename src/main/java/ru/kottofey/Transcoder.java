@@ -2,20 +2,16 @@ package ru.kottofey;
 
 public class Transcoder {
 	private StringBuilder codedPhrase;
-	private String lang;
 	private String originalPhrase;
 	private String keyPhrase;
 	private String mode;
-	private CodeTable codeTable;
+	static CodeTable codeTable = new CodeTable();
 
 	public Transcoder() {
 		Menu menu = new Menu();
 		codedPhrase = new StringBuilder();
 
 		menu.showHelloMenu();
-
-		menu.showLanguageMenu();
-		setLang(menu.getLang());
 
 		menu.showModeMenu();
 		setMode(menu.getMode());
@@ -31,35 +27,86 @@ public class Transcoder {
 		setOriginalPhrase(menu.getOriginalPhrase());
 		setKeyPhrase(menu.getKeyPhrase());
 
-		codeTable = new CodeTable(menu.getLang());
 	}
 
 	public void doEncrypt() {
-		// TODO: Implement encryption code
-		System.out.println(this.codedPhrase.replace(0, codedPhrase.length(), "Returning decrypted phrase"));
-		System.out.println("Code table used:\n" + codeTable.getCodeTable()[0].toString());
+		int keyCounter = 0;
+		char currentKeyChar;
+		char currentPhraseChar;
+
+		// stripping heading and trailing spaces from phrase
+		String strippedPhrase = getOriginalPhrase().strip();
+
+		for (int i = 0; i < strippedPhrase.length(); i++) {
+			char tableLineFirstChar = 0;
+			currentKeyChar = getKeyPhrase().charAt(keyCounter);
+			currentPhraseChar = strippedPhrase.charAt(i);
+
+			// Looking for key letter position in first CodeTable line and use it for coded letter position
+			int currentKeyCharPsn = codeTable.getCodeTable()[0].toString().indexOf(currentKeyChar);
+
+			char iterator = 0;
+
+			// Looking for CodeTable line with first letter equals to letter of a phrase, its number = iterator
+			while (currentPhraseChar != tableLineFirstChar) {
+				tableLineFirstChar = codeTable.getCodeTable()[iterator].charAt(0);
+				iterator++;
+			}
+
+			// Appending coded phrase
+			codedPhrase.append(codeTable.getCodeTable()[iterator - 1].charAt(currentKeyCharPsn));
+
+			if (keyCounter == getKeyPhrase().length() - 1) {
+				keyCounter = 0;
+			} else {
+				keyCounter++;
+			}
+		}
+
+		System.out.println("Encrypted phrase: " + this.codedPhrase);
 	}
 
 	public void doDecrypt() {
-		// TODO: Implement decryption code
-		System.out.println(this.codedPhrase.replace(0, codedPhrase.length(), "Returning decrypted phrase"));
-		System.out.println("Code table used:\n" + codeTable.getCodeTable()[1].toString());
+		int keyCounter = 0;
+		char currentKeyChar;
+		char currentPhraseChar;
+
+		// stripping heading and trailing spaces from phrase
+		String strippedPhrase = getOriginalPhrase().strip();
+		char tableLineFirstChar = 0;
+
+		// ищем букву из ключа в первом столбце
+		// в найденной строчке находим позицию буквы из ключа
+		// из нулевой строки таблицы по этой позиции добавляем в результат букву
+		for (int i = 0; i < strippedPhrase.length(); i++) {
+			currentPhraseChar = strippedPhrase.charAt(i);
+			currentKeyChar = getKeyPhrase().charAt(keyCounter);
+
+			// Looking for CodeTable line with first letter equals to letter of a key, its number = iterator
+			char iterator = 0;
+			while (currentKeyChar != tableLineFirstChar) {
+				tableLineFirstChar = codeTable.getCodeTable()[iterator].charAt(0);
+				iterator++;
+			}
+
+			// Looking for letter position in [iterator] CodeTable line and use it for coded letter position
+			int currentPhraseCharPsn = codeTable.getCodeTable()[iterator - 1].toString().indexOf(currentPhraseChar);
+
+			// Appending coded phrase
+			codedPhrase.append(codeTable.getCodeTable()[0].charAt(currentPhraseCharPsn));
+
+			if (keyCounter == getKeyPhrase().length() - 1) {
+				keyCounter = 0;
+			} else {
+				keyCounter++;
+			}
+		}
+
+		System.out.println("Decrypted phrase: " + getCodedPhrase());
 	}
 
 	public StringBuilder getCodedPhrase() {
 		return codedPhrase;
-	}
-
-	public void setCodedPhrase(StringBuilder codedPhrase) {
-		this.codedPhrase = codedPhrase;
-	}
-
-	public String getLang() {
-		return lang;
-	}
-
-	public void setLang(String lang) {
-		this.lang = lang;
 	}
 
 	public String getOriginalPhrase() {

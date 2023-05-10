@@ -1,68 +1,50 @@
 package ru.kottofey;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Menu {
 	private Scanner scanner = new Scanner(System.in);
-	private String lang;
 	private String mode;
 	private String originalPhrase;
 	private String keyPhrase;
 	private String cipherType;
 
 	void showHelloMenu() {
-		// TODO: Show cipher type in Hello Menu
-		System.out.print("\nThis is a Vigenere Cipher algorithm.\n\n");
-	}
-
-	public void showLanguageMenu() {
-		System.out.print("\nWhat alphabet will be used?\n" +
-				"1) Latin\n" +
-				"2) Cyrillic\n" +
-				"Enter option > ");
-		setLang();
+		System.out.print("\nThis is a Vigenere Cipher algorithm.\n");
 	}
 
 	public void showModeMenu() {
-		System.out.print("\nPlease cipher mode:\n" +
-				"1) Encrypt\n" +
-				"2) Decrypt\n" +
-				"Enter option > ");
+		System.out.print("""
+
+				Please choose a cipher mode:
+				1) Encrypt
+				2) Decrypt
+				Enter option >\s""");
 		setMode();
 	}
 
 	public void showEncryptMenu() {
-		System.out.print("\n\n-= Encryption =-\n" +
-				"Only selected language letters and spaces are allowed,\n" +
-				"all punctuation and other symbols will be truncated.\n");
+		System.out.print("""
+
+				-= Encryption =-
+				Only letters and spaces are allowed, all punctuation
+				and spaces will be truncated after transcode.
+				""");
 		setOriginalPhrase();
 		setKeyPhrase();
 	}
 
 	public void showDecryptMenu() {
-		System.out.print("\n\n-= Decryption =-\n" +
-				"Only selected language letters are allowed,\n" +
-				"all punctuation, spaces and other symbols will be truncated.\n");
+		System.out.print("""
+
+				-= Decryption =-
+				Only letters and spaces are allowed, all punctuation
+				and spaces will be truncated after transcode.
+				""");
 		setOriginalPhrase();
 		setKeyPhrase();
-	}
-
-
-	private void setLang() {
-		do {
-			switch (scanner.nextInt()) {
-				case 1:
-					this.lang = "en";
-					break;
-				case 2:
-					this.lang = "ru";
-					break;
-				default:
-					System.out.println("\nError, select one of options\n");
-					showLanguageMenu();
-			}
-		} while (this.lang.equals(""));
-		scanner.nextLine();
 	}
 
 	private void setMode() {
@@ -82,29 +64,44 @@ public class Menu {
 	}
 
 	private void setOriginalPhrase() {
+		Pattern allowedRange = Pattern.compile("[^a-zA-Zа-яА-Я]" + Transcoder.codeTable.getAdditionalChars());
 		System.out.print("Enter phrase to transcode > ");
 		do {
 			this.originalPhrase = scanner.nextLine();
+			Matcher matcher = allowedRange.matcher(this.originalPhrase);
+
 			if (this.originalPhrase.equals("")) {
 				System.out.print("Phrase for transcoding must not be empty.\n" +
 						"Enter phrase to transcode > ");
+			} else if (matcher.find()) {
+				System.out.print("There allowed only letters and spaces. Try again.\n" +
+						"Enter phrase to transcode > ");
+				this.originalPhrase = "";
 			}
 		} while (this.originalPhrase.equals(""));
 	}
 
 	private void setKeyPhrase() {
-		System.out.print("Enter key phrase > ");
+		Pattern allowedRange = Pattern.compile("[^a-zA-Zа-яА-Я]" + Transcoder.codeTable.getAdditionalChars());
+
+		System.out.print("""
+					Spaces, punctuation, numbers and other symbols are not allowed.
+					Enter key phrase >\s""");
 		do {
 			this.keyPhrase = scanner.nextLine();
+			Matcher matcher = allowedRange.matcher(this.keyPhrase);
+
 			if (this.keyPhrase.equals("")) {
 				System.out.print("Key phrase must not be empty.\n" +
 						"Enter key phrase > ");
+			} else if (matcher.find()) {
+				System.out.print("""
+						There allowed only letters.
+						Spaces will be truncated Try again.
+						Enter key phrase >\s""");
+				this.keyPhrase = "";
 			}
 		} while (this.keyPhrase.equals(""));
-	}
-
-	public String getLang() {
-		return lang;
 	}
 
 	public String getMode() {
