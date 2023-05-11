@@ -37,11 +37,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
-/~$scheme.docx
-/.idea/icon.svg
-/png-transparent-bill-cipher-graphic-design-bill-miscellaneous-angle-text-thumbnail.png
-/png-transparent-bill-cipher-graphic-design-bill-miscellaneous-angle-text-thumbnail.svg
-/.idea/inspectionProfiles/Project_Default.xml
-/scheme.docx
-/VizinerCipher.xlsx
-/~$VizinerCipher.xlsx
+/var
+/target

@@ -5,11 +5,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Menu {
-	private Scanner scanner = new Scanner(System.in);
+	private Scanner scanner = new Scanner(System.in, setCharSet());
 	private String mode;
 	private String originalPhrase;
 	private String keyPhrase;
 	private String cipherType;
+
+	private String setCharSet() {
+		String osName = System.getProperty("os.name").toLowerCase();
+		if (osName.contains("win")) {
+			return "ibm866";
+		} else {
+			return "UTF-8";
+		}
+	}
 
 	void showHelloMenu() {
 		System.out.print("\nThis is a Vigenere Cipher algorithm.\n");
@@ -97,7 +106,7 @@ public class Menu {
 			} else if (matcher.find()) {
 				System.out.print("""
 						There allowed only letters.
-						Spaces will be truncated Try again.
+						Try again.
 						Enter key phrase >\s""");
 				this.keyPhrase = "";
 			}

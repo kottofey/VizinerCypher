@@ -11,7 +11,7 @@ class CodeTable {
 	private StringBuilder tempString;
 	private int tempChar;
 
-	private int alphabetLength = enLength + ruLength + additionalChars.length();
+	private int alphabetLength = enLength + ruLength + additionalChars.length() - 6; // without 6 symbols between latin (Z & a)
 	private StringBuilder[] codeTable = new StringBuilder[alphabetLength];
 
 	CodeTable() {
@@ -23,7 +23,9 @@ class CodeTable {
 
 		// building first "en + ru + add chars" string
 		for (int i = 0; i < alphabetLength - additionalChars.length(); i++) {
-			if (currentChar == enLastLetter + 1) {
+			if (currentChar == 'Z' + 1) {
+				currentChar += 6;
+			} else if (currentChar == enLastLetter + 1) {
 				currentChar += jump;
 			}
 			codeTable[0].append((char) (currentChar++));
