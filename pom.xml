@@ -4,7 +4,7 @@
   <groupId>ru.kottofey</groupId>
   <artifactId>VizinerCipher</artifactId>
   <version>1.0</version>
-  <name>Archetype - PlayfairCypher</name>
+  <name>Viziner Cipher</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -54,7 +54,7 @@
               <!--
               <headerType>gui</headerType>        -->
               <headerType>console</headerType>
-              <jar>target/VizinerCipher.jar</jar>
+              <jar>target/VizinerCipher-1.0.jar</jar>
               <outfile>target/${project.build.finalName}.exe</outfile>
               <errTitle>${project.name}</errTitle>
               <!--                        <icon>your/Icon.ico</icon>-->
