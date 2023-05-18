@@ -3,34 +3,29 @@ package ru.kottofey;
 public class VizinerCipher {
 
 	/*
-	 TODO: Different offsets for code tables
-	 TODO: Different ciphers
-	 TODO: Show cipher type in Hello Menu
+	 TODO: Different offsets for code tables lines as option
+	 TODO: (maybe?) Custom CodeTables char sets or orders
+	 TODO: Add more different ciphers
+	 TODO: Show cipher type in Hello Menu when various ciphers are implemented
 	 TODO: Input from file and output to file
-	 TODO: Move actions from Menu class somewhere. Menu must only show menu text.
 	 TODO: Make exe with cmd line arguments for phrase and key
-	 FIXME: Menu.setMode() сделать проверку на ввод режима "не цифры"
-	 TODO: Возможно, сделать через HashMap
-	 TODO: Зациклить и дополнить выходом, как отдельной опцией в меню
-	 FIXME: В ехе при использовании кириллицы - падает
-	  ("ЭТО ПРОБЛЕМА ТЕРМИНАЛА - НЕ ВИДИТ КИРИЛЛИЦУ!")
-	  (Починил для консолей ОС, но не работает в консоли IDEA)
+	 TODO: Probably better with HashMap?
+	 TODO: Wrap it into interface somehow...
+	 TODO: Move logic from Transcoder constructor
+	 FIXME: РАЗОБРАТЬСЯ С МАТЬ ЕГО ГИТОМ!!!
 	*/
 
 
 	public static void main(String[] args) {
+		boolean DEBUG = true;
 
-		Transcoder transcoder = new Transcoder();
-
-		switch (transcoder.getMode()) {
-			case "encrypt":
-				transcoder.doEncrypt();
-				break;
-			case "decrypt":
-				transcoder.doDecrypt();
-				break;
+		if (DEBUG) {
+			System.out.println("---------========= DEBUG MODE !!!! =========---------\n" +
+					"--=== SWITCH OFF IF RUNNING OUTSIDE OF IDEA !!! ===--");
 		}
 
-	}
+		Transcoder transcoder = new Transcoder(DEBUG);
 
+
+	}
 }
