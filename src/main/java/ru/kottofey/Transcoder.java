@@ -1,32 +1,48 @@
 package ru.kottofey;
 
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Transcoder {
 	private StringBuilder codedPhrase;
 	private String originalPhrase;
 	private String keyPhrase;
 	private String mode;
-	static CodeTable codeTable = new CodeTable();
+	private static CodeTable codeTable = new CodeTable();
+	private boolean DEBUG;
+	Scanner scanner;
+	Pattern allowedRange = Pattern.compile(Transcoder.codeTable.getAllowedPattern());
 
-	public Transcoder() {
+	public Transcoder(boolean DEBUG) {
+		setDEBUG(DEBUG);
+		scanner = new Scanner(System.in, getCharSet());
 		Menu menu = new Menu();
 		codedPhrase = new StringBuilder();
 
 		menu.showHelloMenu();
 
-		menu.showModeMenu();
-		setMode(menu.getMode());
+		do {
+			menu.showModeMenu();
+			setMode();
 
-		switch (getMode()) {
-			case "encrypt":
-				menu.showEncryptMenu();
-				break;
-			case "decrypt":
-				menu.showDecryptMenu();
-				break;
-		}
-		setOriginalPhrase(menu.getOriginalPhrase());
-		setKeyPhrase(menu.getKeyPhrase());
-
+			switch (getMode()) {
+				case "encrypt":
+					menu.showEncryptMenu();
+					setOriginalPhrase();
+					setKeyPhrase();
+					doEncrypt();
+					break;
+				case "decrypt":
+					menu.showDecryptMenu();
+					setOriginalPhrase();
+					setKeyPhrase();
+					doDecrypt();
+					break;
+				case "exit":
+					break;
+			}
+		} while (!getMode().equals("exit"));
 	}
 
 	public void doEncrypt() {
@@ -64,6 +80,7 @@ public class Transcoder {
 		}
 
 		System.out.println("Encrypted phrase: " + this.codedPhrase);
+		this.codedPhrase.delete(0, this.codedPhrase.length());
 	}
 
 	public void doDecrypt() {
@@ -95,6 +112,7 @@ public class Transcoder {
 			// Appending coded phrase
 			codedPhrase.append(codeTable.getCodeTable()[0].charAt(currentPhraseCharPsn));
 
+			// If Key phrase is over, reset and start from beginning of key phrase
 			if (keyCounter == getKeyPhrase().length() - 1) {
 				keyCounter = 0;
 			} else {
@@ -103,6 +121,83 @@ public class Transcoder {
 		}
 
 		System.out.println("Decrypted phrase: " + getCodedPhrase());
+		this.codedPhrase.delete(0, this.codedPhrase.length());
+	}
+
+	private void setOriginalPhrase() {
+		System.out.print("Enter phrase to transcode > ");
+		do {
+			this.originalPhrase = scanner.nextLine();
+			Matcher matcher = allowedRange.matcher(this.originalPhrase);
+
+			if (this.originalPhrase.equals("")) {
+				System.out.print("Phrase for transcoding must not be empty.\n" +
+						"Enter phrase to transcode > ");
+			} else if (matcher.find()) {
+				System.out.print("There allowed only following characters:\n" +
+						Transcoder.codeTable.getAllowedPattern() + "\nTry again.\n" +
+						"Enter phrase to transcode > ");
+				this.originalPhrase = "";
+			}
+		} while (this.originalPhrase.equals(""));
+	}
+
+	private void setKeyPhrase() {
+		System.out.print("Enter key phrase > ");
+		do {
+			this.keyPhrase = scanner.nextLine();
+			Matcher matcher = allowedRange.matcher(this.keyPhrase);
+
+			if (this.keyPhrase.equals("")) {
+				System.out.print("Key phrase must not be empty.\n" +
+						"Enter key phrase > ");
+			} else if (matcher.find()) {
+				System.out.print("There allowed only following characters:\n" +
+						Transcoder.codeTable.getAllowedPattern() + "\nTry again.\n" +
+						"Enter phrase to transcode > ");
+				this.keyPhrase = "";
+			}
+		} while (this.keyPhrase.equals(""));
+	}
+
+	private void setMode() {
+		do {
+			switch (scanner.nextLine()) {
+				case "1":
+					this.mode = "encrypt";
+					break;
+				case "2":
+					this.mode = "decrypt";
+					break;
+				case "3":
+					this.mode = "exit";
+					break;
+				default:
+					System.out.println("\nError, select one of options");
+					System.out.print("Enter option > ");
+					this.mode = "";
+			}
+		} while (this.mode.equals(""));
+	}
+
+	private String getCharSet() {
+		String osName = System.getProperty("os.name").toLowerCase();
+		System.out.println(osName);
+		if (osName.contains("win") && !getDEBUG()) {
+			System.out.println("codepage in use: ibm866");
+			return "ibm866";
+		} else {
+			System.out.println("codepage in use: UTF-8");
+			return "UTF-8";
+		}
+	}
+
+	public boolean getDEBUG() {
+		return DEBUG;
+	}
+
+	public void setDEBUG(boolean DEBUG) {
+		this.DEBUG = DEBUG;
 	}
 
 	public StringBuilder getCodedPhrase() {
@@ -113,23 +208,11 @@ public class Transcoder {
 		return originalPhrase;
 	}
 
-	public void setOriginalPhrase(String originalPhrase) {
-		this.originalPhrase = originalPhrase;
-	}
-
 	public String getKeyPhrase() {
 		return keyPhrase;
 	}
 
-	public void setKeyPhrase(String keyPhrase) {
-		this.keyPhrase = keyPhrase;
-	}
-
 	public String getMode() {
 		return mode;
-	}
-
-	public void setMode(String mode) {
-		this.mode = mode;
 	}
 }
