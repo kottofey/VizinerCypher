@@ -1,13 +1,14 @@
 package ru.kottofey;
 
-public class Menu {
+public final class Menu {
 	//	private String cipherType;
+	private Menu() {}
 
-	void showHelloMenu() {
+	public static void showHelloMenu() {
 		System.out.print("\nThis is a Vigenere Cipher algorithm.\n");
 	}
 
-	public void showModeMenu() {
+	public static void showModeMenu() {
 		System.out.print("""
 
 				Please choose an option:
@@ -17,11 +18,11 @@ public class Menu {
 				Enter option >\s""");
 	}
 
-	public void showEncryptMenu() {
+	public static void showEncryptMenu() {
 		System.out.print("\n-= Encryption =-\n");
 	}
 
-	public void showDecryptMenu() {
+	public static void showDecryptMenu() {
 		System.out.print("\n-= Decryption =-\n");
 	}
 }
