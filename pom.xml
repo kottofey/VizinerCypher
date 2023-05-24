@@ -33,7 +33,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>ru.kottofey.VizinerCipher</mainClass>
+              <mainClass>ru.kottofey.Main</mainClass>
             </manifest>
           </archive>
         </configuration>

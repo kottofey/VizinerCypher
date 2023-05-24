@@ -1,31 +1,88 @@
 package ru.kottofey;
 
-public class VizinerCipher {
+public class VizinerCipher extends Transcoder {
 
-	/*
-	 TODO: Different offsets for code tables lines as option
-	 TODO: (maybe?) Custom CodeTables char sets or orders
-	 TODO: Add more different ciphers
-	 TODO: Show cipher type in Hello Menu when various ciphers are implemented
-	 TODO: Input from file and output to file
-	 TODO: Make exe with cmd line arguments for phrase and key
-	 TODO: Probably better with HashMap?
-	 TODO: Wrap it into interface somehow...
-	 TODO: Move logic from Transcoder constructor
-	 FIXME: РАЗОБРАТЬСЯ С МАТЬ ЕГО ГИТОМ!!!
-	*/
+	private StringBuilder codedPhrase = new StringBuilder();
 
+	public void doEncrypt() {
+		int keyCounter = 0;
+		char currentKeyChar;
+		char currentPhraseChar;
 
-	public static void main(String[] args) {
-		boolean DEBUG = true;
+		// stripping heading and trailing spaces from phrase
+		String strippedPhrase = getOriginalPhrase().strip();
 
-		if (DEBUG) {
-			System.out.println("---------========= DEBUG MODE !!!! =========---------\n" +
-					"--=== SWITCH OFF IF RUNNING OUTSIDE OF IDEA !!! ===--");
+		for (int i = 0; i < strippedPhrase.length(); i++) {
+			char tableLineFirstChar = 0;
+			currentKeyChar = getKeyPhrase().charAt(keyCounter);
+			currentPhraseChar = strippedPhrase.charAt(i);
+
+			// Looking for key letter position in first CodeTable line and use it for coded letter position
+			int currentKeyCharPsn = CodeTable.getCodeTable()[0].toString().indexOf(currentKeyChar);
+
+			char iterator = 0;
+
+			// Looking for CodeTable line with first letter equals to letter of a phrase, its number = iterator
+			while (currentPhraseChar != tableLineFirstChar) {
+				tableLineFirstChar = CodeTable.getCodeTable()[iterator].charAt(0);
+				iterator++;
+			}
+
+			// Appending coded phrase
+			codedPhrase.append(CodeTable.getCodeTable()[iterator - 1].charAt(currentKeyCharPsn));
+
+			if (keyCounter == getKeyPhrase().length() - 1) {
+				keyCounter = 0;
+			} else {
+				keyCounter++;
+			}
+		}
+	}
+
+	public void doDecrypt() {
+		/*
+			Decryption pattern:
+			- looking for a letter from a key in first row - this is a line needed
+			- looking for a letter position in a found line
+			- adding a character from zero'th line at found position
+		*/
+
+		int keyCounter = 0;
+		char currentKeyChar;
+		char currentPhraseChar;
+
+		// stripping heading and trailing spaces from phrase
+		String strippedPhrase = getOriginalPhrase().strip();
+		char tableLineFirstChar = 0;
+
+		for (int i = 0; i < strippedPhrase.length(); i++) {
+			currentPhraseChar = strippedPhrase.charAt(i);
+			currentKeyChar = getKeyPhrase().charAt(keyCounter);
+
+			// Looking for CodeTable line with first letter equals to letter of a key, its number = iterator
+			char iterator = 0;
+			while (currentKeyChar != tableLineFirstChar) {
+				tableLineFirstChar = CodeTable.getCodeTable()[iterator].charAt(0);
+				iterator++;
+			}
+
+			// Looking for letter position in [iterator] CodeTable line and use it for coded letter position
+			int currentPhraseCharPsn = CodeTable.getCodeTable()[iterator - 1].toString().indexOf(currentPhraseChar);
+
+			// Appending coded phrase
+			codedPhrase.append(CodeTable.getCodeTable()[0].charAt(currentPhraseCharPsn));
+
+			// If Key phrase is over, reset and start from beginning of key phrase
+			if (keyCounter == getKeyPhrase().length() - 1) {
+				keyCounter = 0;
+			} else {
+				keyCounter++;
+			}
 		}
 
-		Transcoder transcoder = new Transcoder(DEBUG);
+	}
 
-
+	public void printCodedPhrase() {
+		System.out.println("Result: " + this.codedPhrase.toString());
 	}
 }
