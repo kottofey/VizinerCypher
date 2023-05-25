@@ -6,7 +6,7 @@ public final class CodeTable {
 	private static final int jump = 918 - 1; // distance between rus 'А' & en 'z'
 	private static final int enLength = 'z' - 'A' + 1;
 	private static final int ruLength = 'я' - 'А' + 1;
-	private static final String additionalChars = " ,.!?-"; // Additional allowed characters for input
+	private static final String additionalChars = " ,.!?-ёЁ"; // Additional allowed characters for input
 	private static final String allowedPattern = "[^a-zA-Zа-яА-Я0-9" + additionalChars + "]"; // alphabets plus additional chars
 	private static char currentChar = enFirstLetter;
 	private static StringBuilder tempString = new StringBuilder();
