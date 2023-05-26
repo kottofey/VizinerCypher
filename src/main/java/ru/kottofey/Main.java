@@ -2,21 +2,24 @@ package ru.kottofey;
 
 public class Main {
 	/*
-	 TODO: Different offsets for code tables lines as option
-	 TODO: (maybe?) Custom CodeTables char sets or orders
+	 TODO: Custom CodeTable with user entering first line of table,
+	 		i.e. allowed characters. Need to check against user
+	 		input of phrase and key for correct input
 	 TODO: Add more different ciphers
 	 TODO: Show cipher type in Hello Menu when various ciphers are implemented
 	 TODO: Input from file and output to file
 	 TODO: Make exe with cmd line arguments for phrase and key
 	 TODO: Probably better with HashMap?
 	 TODO: Wrap it into interface somehow...
+	 TODO: Change menu logic, must be all in one place
 	*/
 
-	final static boolean DEBUG = true;
+	static boolean DEBUG = false;
 
 	public static void main(String[] args) {
 
-		if (DEBUG) {
+		if (args.length != 0 && (args[0].equals("--debug") || args[0].equals("-d"))) {
+			DEBUG = true;
 			System.out.println("---------========= DEBUG MODE !!!! =========---------\n" +
 					"--=== SWITCH OFF IF RUNNING OUTSIDE OF IDEA !!! ===--");
 		}
@@ -26,20 +29,6 @@ public class Main {
 
 		do {
 			transcoder = new VizinerCipher();
-			switch (transcoder.getMode()) {
-				case "encrypt":
-					Menu.showEncryptMenu();
-					transcoder.doEncrypt();
-					transcoder.printCodedPhrase();
-					break;
-				case "decrypt":
-					Menu.showDecryptMenu();
-					transcoder.doDecrypt();
-					transcoder.printCodedPhrase();
-					break;
-				case "exit":
-					break;
-			}
 		} while (!transcoder.getMode().equals("exit"));
 
 	}

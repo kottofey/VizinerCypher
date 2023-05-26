@@ -1,8 +1,20 @@
 package ru.kottofey;
 
 public class VizinerCipher extends Transcoder {
+	private final StringBuilder codedPhrase = new StringBuilder();
 
-	private StringBuilder codedPhrase = new StringBuilder();
+	public VizinerCipher() {
+		switch (getMode()) {
+			case "encrypt":
+				doEncrypt();
+				printCodedPhrase();
+				break;
+			case "decrypt":
+				doDecrypt();
+				printCodedPhrase();
+				break;
+		}
+	}
 
 	public void doEncrypt() {
 		int keyCounter = 0;

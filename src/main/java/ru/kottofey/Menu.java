@@ -5,16 +5,20 @@ public final class Menu {
 	private Menu() {}
 
 	public static void showHelloMenu() {
-		System.out.print("\nThis is a Vigenere Cipher algorithm.\n");
+		System.out.print("\n------------------------------------\nThis is a Vigenere Cipher algorithm.\n");
 	}
 
 	public static void showModeMenu() {
+		System.out.println("Current Code table shift: " + CodeTable.getShift());
 		System.out.print("""
-
+    
 				Please choose an option:
+				0) Exit
 				1) Encrypt
 				2) Decrypt
-				3) Exit
+				3) Set code table shift
+				4) Code table to screen
+				
 				Enter option >\s""");
 	}
 
@@ -24,5 +28,9 @@ public final class Menu {
 
 	public static void showDecryptMenu() {
 		System.out.print("\n-= Decryption =-\n");
+	}
+
+	public static void showSetShift() {
+		System.out.print("\nEnter shift value for code table > ");
 	}
 }
