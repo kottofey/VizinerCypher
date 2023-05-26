@@ -15,15 +15,28 @@ public class Transcoder {
 		allowedPattern = Pattern.compile(CodeTable.getAllowedPattern());
 
 		Menu.showHelloMenu();
-
-
 		Menu.showModeMenu();
 		setMode();
-		if (getMode().equals("exit")) {
-			return;
+		switch (mode) {
+			case "encrypt":
+				Menu.showEncryptMenu();
+				setOriginalPhrase();
+				setKeyPhrase();
+				break;
+			case "decrypt":
+				Menu.showDecryptMenu();
+				setOriginalPhrase();
+				setKeyPhrase();
+				break;
+			case "exit":
+				break;
+			case "shift":
+				setTableShift();
+				break;
+			case "tableOutput":
+				CodeTable.tableOuptput();
+				break;
 		}
-		setOriginalPhrase();
-		setKeyPhrase();
 	}
 
 
@@ -75,6 +88,9 @@ public class Transcoder {
 	private void setMode() {
 		do {
 			switch (scanner.nextLine()) {
+				case "0":
+					this.mode = "exit";
+					break;
 				case "1":
 					this.mode = "encrypt";
 					break;
@@ -82,7 +98,10 @@ public class Transcoder {
 					this.mode = "decrypt";
 					break;
 				case "3":
-					this.mode = "exit";
+					this.mode = "shift";
+					break;
+				case "4":
+					this.mode = "tableOutput";
 					break;
 				default:
 					System.out.println("\nError, select one of options");
@@ -108,5 +127,19 @@ public class Transcoder {
 		}
 	}
 
-
+	public void setTableShift() {
+		String str;
+		Pattern allowed = Pattern.compile("[^0-9]");
+		do {
+			Menu.showSetShift();
+			str = scanner.nextLine();
+			Matcher matcher = allowed.matcher(str);
+			if (matcher.find() || Integer.parseInt(str) > 134) {
+				System.out.println("There must be a positive integer from 0 to " + CodeTable.getCodeTable().length);
+				str = "";
+			}
+		} while (str.equals(""));
+		CodeTable.setShift(Integer.parseInt(str));
+		CodeTable.flushCodeTable();
+	}
 }
