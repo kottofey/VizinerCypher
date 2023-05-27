@@ -41,6 +41,5 @@ build/
 /JavaDoc
 pom.xml
 /src/main/resources
-#!/target/VizinerCipher*.jar
-#!/target/VizinerCipher*.exe
 Start.cmd
+TODO
