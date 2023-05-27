@@ -1,22 +1,20 @@
 package ru.kottofey;
 
 public class VizinerCipher extends Transcoder {
-	private final StringBuilder codedPhrase = new StringBuilder();
+	private static StringBuilder codedPhrase = new StringBuilder();
 
 	public VizinerCipher() {
 		switch (getMode()) {
 			case "encrypt":
-				doEncrypt();
-				printCodedPhrase();
+				System.out.println(doEncrypt());
 				break;
 			case "decrypt":
-				doDecrypt();
-				printCodedPhrase();
+				System.out.println(doDecrypt());
 				break;
 		}
 	}
 
-	public void doEncrypt() {
+	public String doEncrypt() {
 		int keyCounter = 0;
 		char currentKeyChar;
 		char currentPhraseChar;
@@ -49,9 +47,10 @@ public class VizinerCipher extends Transcoder {
 				keyCounter++;
 			}
 		}
+		return this.codedPhrase.toString();
 	}
 
-	public void doDecrypt() {
+	public String doDecrypt() {
 		/*
 			Decryption pattern:
 			- looking for a letter from a key in first row - this is a line needed
@@ -91,10 +90,6 @@ public class VizinerCipher extends Transcoder {
 				keyCounter++;
 			}
 		}
-
-	}
-
-	public void printCodedPhrase() {
-		System.out.println("Result: " + this.codedPhrase.toString());
+		return this.codedPhrase.toString();
 	}
 }

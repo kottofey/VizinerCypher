@@ -13,30 +13,10 @@ public class Transcoder {
 
 	public Transcoder() {
 		allowedPattern = Pattern.compile(CodeTable.getAllowedPattern());
-
 		Menu.showHelloMenu();
 		Menu.showModeMenu();
 		setMode();
-		switch (mode) {
-			case "encrypt":
-				Menu.showEncryptMenu();
-				setOriginalPhrase();
-				setKeyPhrase();
-				break;
-			case "decrypt":
-				Menu.showDecryptMenu();
-				setOriginalPhrase();
-				setKeyPhrase();
-				break;
-			case "exit":
-				break;
-			case "shift":
-				setTableShift();
-				break;
-			case "tableOutput":
-				CodeTable.tableOuptput();
-				break;
-		}
+		doMode();
 	}
 
 
@@ -89,28 +69,50 @@ public class Transcoder {
 		do {
 			switch (scanner.nextLine()) {
 				case "0":
-					this.mode = "exit";
+					mode = "exit";
 					break;
 				case "1":
-					this.mode = "encrypt";
+					mode = "encrypt";
 					break;
 				case "2":
-					this.mode = "decrypt";
+					mode = "decrypt";
 					break;
 				case "3":
-					this.mode = "shift";
+					mode = "shift";
 					break;
 				case "4":
-					this.mode = "tableOutput";
+					mode = "tableOutput";
 					break;
 				default:
 					System.out.println("\nError, select one of options");
 					System.out.print("Enter option > ");
-					this.mode = "";
+					mode = "";
 			}
-		} while (this.mode.equals(""));
+		} while (mode.equals(""));
 	}
 
+	private void doMode() {
+		switch (mode) {
+			case "encrypt":
+				Menu.showEncryptMenu();
+				setOriginalPhrase();
+				setKeyPhrase();
+				break;
+			case "decrypt":
+				Menu.showDecryptMenu();
+				setOriginalPhrase();
+				setKeyPhrase();
+				break;
+			case "exit":
+				break;
+			case "shift":
+				setTableShift();
+				break;
+			case "tableOutput":
+				CodeTable.tableOuptput();
+				break;
+		}
+	}
 	public String getMode() {
 		return mode;
 	}
