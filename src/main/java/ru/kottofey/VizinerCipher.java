@@ -1,17 +1,18 @@
 package ru.kottofey;
 
-public class VizinerCipher extends Transcoder {
+public class VizinerCipher {
 	private static StringBuilder codedPhrase = new StringBuilder();
 
-	public VizinerCipher() {
-		switch (getMode()) {
+	public VizinerCipher(String mode) {
+		switch (mode) {
 			case "encrypt":
-				System.out.println(doEncrypt());
+				System.out.println("Coded phrase: " + doEncrypt());
 				break;
 			case "decrypt":
-				System.out.println(doDecrypt());
+				System.out.println("Decoded phrase: " + doDecrypt());
 				break;
 		}
+		codedPhrase.delete(0, codedPhrase.length());
 	}
 
 	public String doEncrypt() {
@@ -20,11 +21,11 @@ public class VizinerCipher extends Transcoder {
 		char currentPhraseChar;
 
 		// stripping heading and trailing spaces from phrase
-		String strippedPhrase = getOriginalPhrase().strip();
+		String strippedPhrase = Transcoder.getOriginalPhrase().strip();
 
 		for (int i = 0; i < strippedPhrase.length(); i++) {
 			char tableLineFirstChar = 0;
-			currentKeyChar = getKeyPhrase().charAt(keyCounter);
+			currentKeyChar = Transcoder.getKeyPhrase().charAt(keyCounter);
 			currentPhraseChar = strippedPhrase.charAt(i);
 
 			// Looking for key letter position in first CodeTable line and use it for coded letter position
@@ -41,7 +42,7 @@ public class VizinerCipher extends Transcoder {
 			// Appending coded phrase
 			codedPhrase.append(CodeTable.getCodeTable()[iterator - 1].charAt(currentKeyCharPsn));
 
-			if (keyCounter == getKeyPhrase().length() - 1) {
+			if (keyCounter == Transcoder.getKeyPhrase().length() - 1) {
 				keyCounter = 0;
 			} else {
 				keyCounter++;
@@ -63,12 +64,12 @@ public class VizinerCipher extends Transcoder {
 		char currentPhraseChar;
 
 		// stripping heading and trailing spaces from phrase
-		String strippedPhrase = getOriginalPhrase().strip();
+		String strippedPhrase = Transcoder.getOriginalPhrase().strip();
 		char tableLineFirstChar = 0;
 
 		for (int i = 0; i < strippedPhrase.length(); i++) {
 			currentPhraseChar = strippedPhrase.charAt(i);
-			currentKeyChar = getKeyPhrase().charAt(keyCounter);
+			currentKeyChar = Transcoder.getKeyPhrase().charAt(keyCounter);
 
 			// Looking for CodeTable line with first letter equals to letter of a key, its number = iterator
 			char iterator = 0;
@@ -84,7 +85,7 @@ public class VizinerCipher extends Transcoder {
 			codedPhrase.append(CodeTable.getCodeTable()[0].charAt(currentPhraseCharPsn));
 
 			// If Key phrase is over, reset and start from beginning of key phrase
-			if (keyCounter == getKeyPhrase().length() - 1) {
+			if (keyCounter == Transcoder.getKeyPhrase().length() - 1) {
 				keyCounter = 0;
 			} else {
 				keyCounter++;

@@ -7,17 +7,16 @@ public final class CodeTable {
     private static final int enLength = 'z' - 'A' + 1;
     private static final int ruLength = 'я' - 'А' + 1;
     private static final String additionalChars = " ,.!?-ёЁ"; // Additional allowed characters for input
-    private static final String allowedPattern = "[^a-zA-Zа-яА-Я0-9" + additionalChars + "]"; // alphabets plus additional chars
+    private static final String allowedPatternString = "[^a-zA-Zа-яА-Я0-9" + additionalChars + "]"; // alphabets plus additional chars
     private static int shift = 0;
-
-    private CodeTable() {
-    }
 
     // Line length without six UTF-8 symbols between latin (Z & a) plus ten digits
     private static final int alphabetLength = enLength + ruLength + additionalChars.length() - 6 + 10;
 
     // The whole Code Table init
     private static StringBuilder[] codeTable = new StringBuilder[alphabetLength];
+
+    private CodeTable() {}
 
     public static void makeCodeTable() {
         // Creating first line
@@ -47,8 +46,8 @@ public final class CodeTable {
         }
     }
 
-    public static String getAllowedPattern() {
-        return allowedPattern;
+    public static String getAllowedPatternString() {
+        return allowedPatternString;
     }
 
     public static StringBuilder[] getCodeTable() {

@@ -5,17 +5,19 @@ public class Main {
 	static boolean DEBUG = false;
 
 	public static void main(String[] args) {
-		isDebug(args);
+		Debug(args);
 
-		VizinerCipher transcoder;
 		CodeTable.makeCodeTable();
 
 		do {
-			transcoder = new VizinerCipher();
-		} while (!transcoder.getMode().equals("exit"));
+			Menu.showHelloMenu();
+			Menu.showModeMenu();
+			Actions.setMode();
+			Actions.doMode(Actions.getMode());
+		} while (!Actions.getMode().equals("exit"));
 	}
 
-	private static void isDebug(String[] args) {
+	private static void Debug(String[] args) {
 		if (args.length != 0 && (args[0].equals("--debug") || args[0].equals("-d"))) {
 			DEBUG = true;
 			System.out.println("---------========= DEBUG MODE !!!! =========---------\n" +
