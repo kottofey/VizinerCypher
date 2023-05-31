@@ -22,7 +22,8 @@ public final class Menu {
 				 1) Encrypt
 				 2) Decrypt
 				 3) Set code table shift
-				 4) Code table to screen
+				 4) Allowed chars list to screen
+				 5) Code table to screen
 				
 				Enter option >\s""");
 	}

@@ -30,6 +30,9 @@ public final class Actions {
                     mode = "shift";
                     break;
                 case "4":
+                    mode = "charsOutput";
+                    break;
+                case "5":
                     mode = "tableOutput";
                     break;
                 default:
@@ -71,6 +74,9 @@ public final class Actions {
                 break;
             case "tableOutput":
                 CodeTable.tableOuptput();
+                break;
+            case "charsOutput":
+                CodeTable.allowedCharsOutput();
                 break;
         }
     }
