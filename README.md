@@ -8,36 +8,23 @@ This is an application for encrypting and decrypting user text from console inpu
 
 ## Requirements:
 
-To run exe file minimum version of JRE or JDK is 15 is required to be installed.
-You may run jar file with java.exe _(it's Java15)_ included in `jre` folder
-or compile sources yourself. Again, minimum version of Java for compilation is `15`.
-
 To run executable file you need to install minimum JDK 15.
-You can download zip-archive from openJDK site [here](https://download.java.net/openjdk/jdk15/ri/openjdk-15+36_windows-x64_bin.zip).
+You can download zip-archive from openJDK site for Windows [here](https://download.java.net/openjdk/jdk15/ri/openjdk-15+36_windows-x64_bin.zip).
 
 Or download installer for your OS from Oracle website [here](https://www.oracle.com/java/technologies/downloads/)
 in `Java Downloads` or `Java Archive` tab. You need Java SE.
-Oracle installer is better as it has automated installation. Also,
-to download from Oracle website you need to register. It's fast and easy so worth it.
+Oracle installer is preferable as it has automated installation.
 
 Also you may download and unzip latest JDK [here](https://jdk.java.net/).
 
 ## How to start application:
 
-If you have proper JRE/JDK installed just run exe file. Alternatively open `Start.cmd` script,
-it will use `java.exe` of version 15, attached in source.
-
-<div align="center">
-<img src="https://placehold.co/250x50/e10600/000000/png?text=IMPORTANT!&font=Roboto)" alt="Very-very important!"/>
-</div>
-
-***Download and unzip source from latest release somewhere.
-To be able to run jar file, download `VizinerCipher.jar` and `Start.cmd` and put them
-together with `jre` folder!***
-
-Alternatively download and put [java.exe](`https://github.com/kottofey/VizinerCypher/blob/b20cfcdb7c8ce140bb47f150e878751fa34eb111/jre/java.exe`)
-somewhere and edit path variables in `Start.cmd`. Or you may use your own `java.exe`.
-With blackjack and garbage collectors.
+If you are on Windows and have proper JRE/JDK installed to a **standard location** just run exe file.
+Alternatively open terminal (Windows or Linux or MacOS does not matter), type in the following:
+```
+java -jar ...
+```
+Where `...` is a path to your `VizinerCipher-[version].jar`
 
 ## How it works:
 
@@ -52,8 +39,7 @@ a shift value to get a correct coding table for algorithm.
 So far there is only [Vigenère cipher](https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher)
 algorithm implemented. More ciphers will be added later.
 
-Standard **Coding table** consists of characters allowed for input:
-`1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя ,.!?-ёЁ`
+Standard **Coding table** consists of characters allowed for input and may be put to screen via application menu.
 
 ## Things already done:
 
@@ -62,8 +48,8 @@ Standard **Coding table** consists of characters allowed for input:
 - Coding table generating
 - Coding table shift
 - Additional characters in coding table such as punctuation and russian letter "Ёё"
-    - It may be set in class CodeTable.java in ***additionalChars*** field. Need to recompile
-      application after this change. So far this is a standard set of characters.
+    - They are hardcoded and may be set in class CodeTable.java in ***additionalChars*** field
+      (Need to recompile application after this change.)
 
 ## Things I want to do:
 
